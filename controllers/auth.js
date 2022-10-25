@@ -35,11 +35,12 @@ const login = (req, res, next) => {
   User.findOne({ where: { login } })
     .then((user) => {
       if (!user) {
-        next(new CastError("Пользователь не найден"));
+        return next(new CastError("Пользователь не найден"));
       }
       let comparePassword = bcrypt.compareSync(password, user.password);
+      console.log(comparePassword);
       if (!comparePassword) {
-        next(new CastError("Указан неверный пароль"));
+        return next(new CastError("Указан неверный пароль"));
       }
       const token = jwt.sign(
         { id: user.id, login: user.login },
