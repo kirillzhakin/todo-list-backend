@@ -5,8 +5,18 @@ const { User } = require("../models/models");
 const ConflictError = require("../errors/ConflictError");
 const ValidationError = require("../errors/ValidationError");
 const CastError = require("../errors/CastError");
+const ReqAuthError = require("../errors/ReqAuthError");
 
 const { NODE_ENV, JWT_TOKEN } = process.env;
+
+// Генератор токена
+const generateJwt = (id, login) => {
+  return jwt.sign(
+    { id, login },
+    NODE_ENV === "production" ? JWT_TOKEN : "dev-secret",
+    { expiresIn: "7d" }
+  );
+};
 
 // POST /signup - регистрация пользователя
 const createUser = (req, res, next) => {
@@ -38,21 +48,24 @@ const login = (req, res, next) => {
         return next(new CastError("Пользователь не найден"));
       }
       let comparePassword = bcrypt.compareSync(password, user.password);
-      console.log(comparePassword);
       if (!comparePassword) {
-        return next(new CastError("Указан неверный пароль"));
+        return next(new ReqAuthError("Указан неверный пароль"));
       }
-      const token = jwt.sign(
-        { id: user.id, login: user.login },
-        NODE_ENV === "production" ? JWT_TOKEN : "dev-secret",
-        { expiresIn: "7d" }
-      );
-      res.send({ token });
+
+      const token = generateJwt(user.id, user.login);
+      return res.send({ token });
     })
     .catch((err) => next(err));
+};
+
+// GET /auth - проверка наличия токена
+const check = (req, res, _next) => {
+  const token = generateJwt(req.user.id, req.user.login);
+  return res.send({ token })
 };
 
 module.exports = {
   createUser,
   login,
+  check,
 };

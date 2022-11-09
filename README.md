@@ -1,10 +1,11 @@
-# todo-list-backend Tasks
+# Todo-list-backend Tasks
 
 ### Использованные технологии  
 ![NODE.JS](https://img.shields.io/badge/Node.js-172F45?style=for-the-badge&logo=node.js)
-![POSTGRESQL](https://img.shields.io/badge/POSTGRESQL-172F45?style=for-the-badge&logo=posrgresql)
+![POSTGRESQL](https://img.shields.io/badge/POSTGRESQL-172F45?style=for-the-badge&logo=postgresql)
 ![EXPRESS.JS](https://img.shields.io/badge/Express-172F45?style=for-the-badge&logo=express)
 
+### Frontend часть приложения: https://github.com/kirillzhakin/todo-list-frontend
 
 ### Реализована
 - Регистрация пользователя
@@ -17,7 +18,10 @@
 
 Если вы хотите запустить локальную копию приложения, следуйте инструкции:
 
-1. Клонируйте репозиторий 
+1. Клонируйте репозиторий
+```sh
+ https://github.com/kirillzhakin/todo-list-backend
+ ```
 2. Установите зависимости npm
 
 ```sh
@@ -83,8 +87,7 @@ http://localhost:5000/tasks
   "priority": "Высокий",
   "status": "Выполняется",
   "creatorUser": "Кирилл",
-  "responsibleUser": "Иванов",
-  "userId": "1"
+  "responsibleUser": "Иванов"
 }
 ```
 

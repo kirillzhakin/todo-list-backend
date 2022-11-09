@@ -20,24 +20,17 @@ const taskController = (req, res, next) => {
 };
 
 // POST /tasks — создаёт задачу
-const createTask = async (req, res, next) => {
-  const {
-    title,
-    date,
-    priority,
-    status,
-    creatorUser,
-    responsibleUser,
-    userId,
-  } = req.body;
+const createTask = (req, res, next) => {
+  const { id, login } = req.user;
+  const { title, date, priority, status, responsibleUser } = req.body;
   Task.create({
     title,
     date,
     priority,
     status,
-    creatorUser,
-    responsibleUser,
-    userId,
+    creatorUser: login,
+    responsibleUser: responsibleUser,
+    userId: id,
   })
     .then((task) => res.send(task))
     .catch((err) => next(err));
@@ -57,16 +50,11 @@ const deleteTask = (req, res, next) => {
 
 // PATCH /tasks/:id — обновляет задачу по идентификатору
 const updateTask = (req, res, next) => {
-  const {
-    title,
-    date,
-    priority,
-    status,
-    creatorUser,
-    responsibleUser,
-    userId
-  } = req.body;
+  console.log(req.params, req.body);
   const { id } = req.params;
+  const { title, date, priority, status, creatorUser, responsibleUser } =
+    req.body;
+
   Task.findByPk(id).then((task) => {
     if (!task) next(new NotFoundError("Такой задачи не существует"));
     task
@@ -77,10 +65,11 @@ const updateTask = (req, res, next) => {
         status,
         creatorUser,
         responsibleUser,
-        userId
       })
-      .then((task) => res.send(task))
-       .catch((err) => next(err));
+      .then((task) => {
+        res.send(task);
+      })
+      .catch((err) => next(err));
   });
 };
 
