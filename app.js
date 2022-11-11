@@ -13,7 +13,7 @@ const authRouter = require("./routes/auth");
 const errorHandler = require("./errors/errorHandler");
 const NotFoundError = require("./errors/NotFoundError");
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 
 const app = express();
 
